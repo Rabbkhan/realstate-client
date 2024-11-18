@@ -18,33 +18,43 @@ const Signup = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
+  
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      })
-
-      const data = await res.json()
-      if (data.success === false) {
-        setLoading(false)
-        setError(data.message)
-        return
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        setLoading(false);
+        setError(data.message || 'Signup failed.');
+        return;
       }
-      console.log(data)
-      setLoading(false)
-      setError(null)
-      navigate('/sign-in')
+  
+      if (!data.isVerified) {
+        // If email verification is required
+        setLoading(false);
+        navigate('/emailverify'); // Redirect to email verification page
+        return;
+      }
+  
+      setLoading(false);
+      setError(null);
+      alert('Signup successful! Please verify your email.');
+      navigate('/sign-in'); // Redirect to login after signup
     } catch (error) {
-      setLoading(false)
-      setError(error.message)
+      setLoading(false);
+      setError(error.message || 'An error occurred. Please try again.');
     }
-  }
-
+  };
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
