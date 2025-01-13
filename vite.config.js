@@ -2,23 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  // Dynamically determine the API target based on the mode
-  const isProduction = mode === "production";
-  const apiTarget = isProduction
-    ? "https://realestate-api-0sig.onrender.com"
-    : "http://localhost:5000";
-
-  return {
-    server: {
-      proxy: {
-        "/api": {
-          target: apiTarget,
-          secure: false,
-          changeOrigin: true,
-        },
+export default defineConfig({
+  server: {
+    proxy: {
+      "/api": {
+        // target: "http://localhost:5000",
+        target: "https://realestate-api-0sig.onrender.com",
+        secure: true,
       },
     },
-    plugins: [react()],
-  };
+  },
+
+  plugins: [react()],
 });
