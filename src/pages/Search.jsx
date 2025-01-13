@@ -52,7 +52,9 @@ const Search = () => {
       setLoading(true);
 
       const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/listing/get?${searchQuery}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/listing/get?${searchQuery}`
+      );
       const data = await res.json();
 
       setListings(data);
@@ -251,14 +253,10 @@ const Search = () => {
       {/* Properties Section */}
       <div className="w-full md:w-2/3 grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Example Property Card */}
-        {!loading && listings.length === 0 && (
-          <p>No listing found</p>
-        )}
+        {!loading && listings.length === 0 && <p>No listing found</p>}
 
         <ListingItem listings={listings} />
-
       </div>
-      
     </div>
   );
 };

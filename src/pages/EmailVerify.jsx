@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EmailVerify = () => {
-  const [otp, setOtp] = useState(new Array(6).fill(''));
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (e, index) => {
     const value = e.target.value;
     if (!/^\d*$/.test(value)) return; // Allow only numeric input
@@ -20,9 +20,9 @@ const EmailVerify = () => {
   };
 
   const handleBackspace = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       const newOtp = [...otp];
-      newOtp[index - 1] = '';
+      newOtp[index - 1] = "";
       setOtp(newOtp);
       e.target.previousSibling?.focus();
     }
@@ -30,31 +30,36 @@ const EmailVerify = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const code = otp.join('');
+    const code = otp.join("");
     try {
-      const res = await fetch('/api/auth/verifyemail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/verifyemail`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Verification failed.');
+        setError(data.message || "Verification failed.");
         return;
       }
 
-      alert('OTP verified successfully!');
-      navigate('/sign-in')
+      alert("OTP verified successfully!");
+      navigate("/sign-in");
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError("An error occurred. Please try again.");
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Verify OTP</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Verify OTP
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex justify-center space-x-2">

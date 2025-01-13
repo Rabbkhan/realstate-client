@@ -1,68 +1,75 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import OAuth from '../components/OAuth'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({})
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-  
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
+
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         setLoading(false);
-        setError(data.message || 'Signup failed.');
+        setError(data.message || "Signup failed.");
         return;
       }
-  
+
       if (!data.isVerified) {
         // If email verification is required
         setLoading(false);
-        navigate('/emailverify'); // Redirect to email verification page
+        navigate("/emailverify"); // Redirect to email verification page
         return;
       }
-  
+
       setLoading(false);
       setError(null);
-      alert('Signup successful! Please verify your email.');
-      navigate('/sign-in'); // Redirect to login after signup
+      alert("Signup successful! Please verify your email.");
+      navigate("/sign-in"); // Redirect to login after signup
     } catch (error) {
       setLoading(false);
-      setError(error.message || 'An error occurred. Please try again.');
+      setError(error.message || "An error occurred. Please try again.");
     }
   };
-  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Sign Up
+        </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
               Username
             </label>
             <input
@@ -77,7 +84,10 @@ const Signup = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -92,7 +102,10 @@ const Signup = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -111,12 +124,12 @@ const Signup = () => {
             type="submit"
             className="w-full px-4 py-2 font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            {loading ? 'Loading...' : 'Sign Up'}
+            {loading ? "Loading..." : "Sign Up"}
           </button>
 
-       {/* continue with google components added here  */}
+          {/* continue with google components added here  */}
 
-          <OAuth/>
+          <OAuth />
 
           {/* Error Message */}
           {error && (
@@ -127,14 +140,17 @@ const Signup = () => {
         </form>
 
         <p className="text-sm text-center text-gray-600">
-          Already have an account?{' '}
-          <Link to="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-500">
+          Already have an account?{" "}
+          <Link
+            to="/sign-in"
+            className="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             Login
           </Link>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;
