@@ -33,6 +33,12 @@ const Listing = () => {
             params.listingId
           }`
         );
+        console.log(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/listing/get/${
+            param.listingId
+          }`
+        );
+
         const data = await res.json();
         if (data.success === false) {
           setError(true);
