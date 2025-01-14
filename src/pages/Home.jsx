@@ -26,7 +26,7 @@ const Home = () => {
           }/api/listing/get?offer=true&limit=4`
         );
 
-        console.log(import.meta.env.VITE_APP_BACKEND_URL);
+        // console.log(import.meta.env.VITE_APP_BACKEND_URL);
 
         const offersData = await offerRes.json();
         setOfferListings(offersData);
