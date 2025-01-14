@@ -35,7 +35,7 @@ const Listing = () => {
         );
         console.log(
           `${import.meta.env.VITE_APP_BACKEND_URL}/api/listing/get/${
-            param.listingId
+            params.listingId
           }`
         );
 
