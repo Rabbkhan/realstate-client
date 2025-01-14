@@ -141,7 +141,7 @@ const Profile = () => {
       dispatch(signoutUserStart());
 
       const res = await fetch(
-        "${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/signout"
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/signout`
       );
       console.log("Response:", res);
 
